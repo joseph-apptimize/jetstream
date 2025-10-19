@@ -1,0 +1,20 @@
+# This file tells gcloud to ignore certain files when deploying.
+# It's like a .gitignore file, but for Google Cloud.
+
+# Ignore the Google Cloud SDK itself! This is the fix.
+google-cloud-sdk/
+.gcloud/
+
+# Ignore the Python virtual environment
+/ai_agent_env/
+
+# Ignore Python bytecode and cache
+__pycache__/
+*.pyc
+
+# Ignore common version control folders
+.git/
+.gitignore
+
+# Ignore common OS files
+.DS_Store
