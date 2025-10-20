@@ -156,7 +156,8 @@
         const payload = {
             projectId: projectId,
             message: messageFromInput,
-            fileContent: fileContent
+            fileContent: fileContent,
+            chatHistory: messages // Send entire conversation history
         };
 
         const response = await fetch("https://us-central1-airship-ai-value-poc-2024.cloudfunctions.net/jetstream-main-orchestrator", {
@@ -177,7 +178,15 @@
         } else if (response.status === 200) {
             // --- Flow 2: Immediate Response Received (Follow-up Question) ---
             const data = await response.json();
-            messages = data.chatHistory; // Update history directly
+            // Remove typing indicator from all messages in the chat history
+            const cleanedHistory = data.chatHistory.map(msg => {
+                if (msg.typing) {
+                    const { typing, ...msgWithoutTyping } = msg;
+                    return msgWithoutTyping;
+                }
+                return msg;
+            });
+            messages = cleanedHistory; // Update history directly
             isUploading = false; // Mark task as complete
 
         } else {
